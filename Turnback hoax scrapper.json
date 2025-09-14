@@ -1,0 +1,2556 @@
+{
+  "name": "Turnback hoax dataset",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 10
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -368,
+        -816
+      ],
+      "id": "a3c60698-a1b2-4dd0-8f01-b7c394211025",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data",
+        "options": {
+          "destinationFieldName": "url"
+        }
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        976,
+        -912
+      ],
+      "id": "4f37463a-66cb-44a7-b404-150fa035e47c",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1632,
+        -912
+      ],
+      "id": "ce312761-2d6f-4e8b-a5a5-90fd491e114a",
+      "name": "Fetch hoax page"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.videoPage }}",
+                    "rightValue": "facebook",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    },
+                    "id": "244d874b-93e8-421c-989a-a59ec7ef6bc6"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "daa2f16b-ad4f-4597-acee-b64d5f7837ef",
+                    "leftValue": "={{ $json.videoPage }}",
+                    "rightValue": "t",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "7926f600-377e-47d3-b6ff-55f228a7d24c",
+                    "leftValue": "={{ $json.videoPage }}",
+                    "rightValue": "x.com",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "bff1a8bf-cdc9-443f-ab80-d9209bd7d12c",
+                    "leftValue": "={{ $json.videoPage }}",
+                    "rightValue": "threads.com",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        6176,
+        -1552
+      ],
+      "id": "b8ee4fa0-a501-47da-92e4-41b8721ee2c4",
+      "name": "Switch",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "fileSelector": "/home/node/datasetHoaxVideoWorkflow/datasetHoax.json",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        1760,
+        -1456
+      ],
+      "id": "ea90cf5a-a3fd-4328-bab0-e97e02589689",
+      "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "operation": "fromJson",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        1984,
+        -1456
+      ],
+      "id": "cd1db73c-3a99-42c5-8d9f-db7ac9d402ce",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "fieldsToMatchString": "url",
+        "joinMode": "keepEverything",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        6256,
+        -1056
+      ],
+      "id": "ba027f87-6fb5-4b00-ab80-74b7b03c4c01",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "/home/node/datasetHoaxVideoWorkflow/datasetHoax.json",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        9344,
+        -928
+      ],
+      "id": "9ace1578-fb36-4128-9c5c-e3c91160e254",
+      "name": "Read/Write Files from Disk1"
+    },
+    {
+      "parameters": {
+        "fileSelector": "/home/node/datasetHoaxVideoWorkflow/paginationTurnBack.json",
+        "options": {
+          "dataPropertyName": "data"
+        }
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        -144,
+        -816
+      ],
+      "id": "679a8ce8-7e9a-494e-ad18-97aba6b91ce5",
+      "name": "Read pagination",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "errorMessage": "totalPages is already max"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        752,
+        -720
+      ],
+      "id": "f84002dd-2d33-4a81-90d2-188d82a92102",
+      "name": "Stop and Error"
+    },
+    {
+      "parameters": {
+        "content": "# Fetch all article page and doing pagination\n",
+        "height": 464,
+        "width": 1632
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -448,
+        -992
+      ],
+      "typeVersion": 1,
+      "id": "d6a2a442-b9e9-4c25-ac4a-de5a91fa5a8a",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Fetch each article and extract information",
+        "height": 304,
+        "width": 1360
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1360,
+        -1024
+      ],
+      "typeVersion": 1,
+      "id": "6d3d3cad-487e-47b9-a3eb-34efa85e03dc",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Retrive old file, for merging later",
+        "height": 272,
+        "width": 704
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1696,
+        -1568
+      ],
+      "typeVersion": 1,
+      "id": "f8fe47cb-68ac-4ec2-899f-3c58a7ac1d36",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Merge preprocessed data, combine url and data preprocessing",
+        "height": 304,
+        "width": 976
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3248,
+        -1024
+      ],
+      "typeVersion": 1,
+      "id": "af8846e4-6af9-49a1-895a-da8a21efb5c6",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## TODO: find api to download multiple video source",
+        "height": 320,
+        "width": 720
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        6112,
+        -1632
+      ],
+      "typeVersion": 1,
+      "id": "9f06ff91-c859-4555-847a-5d9ac03aa4b5",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "operation": "toJson",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        9120,
+        -928
+      ],
+      "id": "8aec7481-6900-45c6-b661-3e7a7de3750b",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "authentication": "webhook",
+        "content": "Hilang bang",
+        "options": {},
+        "embeds": {
+          "values": [
+            {
+              "description": "=currentPage: {{ $('Extract pagination').item.json.data[0].count }}\n```json\n{{ $json.toJsonString() }}\n```\nurl: {{ $json.url }}\n",
+              "author": "Scrapper",
+              "color": "#FF0000",
+              "timestamp": "={{ $now.toString() }}",
+              "title": "Hilang bang video page-nya, tambahin selector"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        6416,
+        -128
+      ],
+      "id": "6dc30a56-0cb9-47ba-b9c2-90414c7cce57",
+      "name": "Discord",
+      "webhookId": "a2ae47c9-ea0e-4053-a6ab-ae7a0a596a95",
+      "credentials": {
+        "discordWebhookApi": {
+          "id": "bm39Te9lBHmNpcEI",
+          "name": "Alert"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        6192,
+        -128
+      ],
+      "id": "90157525-3617-4e5e-a04b-f0a9191850a9",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "errorMessage": "Ilang video page e, tambah selector"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        6640,
+        -128
+      ],
+      "id": "b3e9fa79-63ca-46d5-8b6f-1af5759edcac",
+      "name": "Missing video page breakpoint"
+    },
+    {
+      "parameters": {
+        "content": "## Send notification about missing data",
+        "height": 256,
+        "width": 1072
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        5824,
+        -208
+      ],
+      "typeVersion": 1,
+      "id": "57bad767-c4e0-455d-a37d-9c3ad9c13e7f",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const data = $input.item.json.naration;\nconst title = $input.item.json.title;\n\nconst cleaner = (input) => {\n  input = input.replaceAll(\">\", \" \"); // remove \">\" block quote\n  input = input.replaceAll(\"“\", \"\").replaceAll(\"”\", \"\"); // remove double quote\n  input = input.replaceAll(\"\\n\", \" \"); // remove line break\n  input = input.replace(/\\s+/g, \" \"); // remove multiple spaces\n  input = input.trim(); // trim whitespaces\n\n  return input;\n};\n\nconst titleCleaner = (input) => {\n  input = input.replaceAll(\"\\n\", \" \");\n  input = input.replaceAll(\"Video \", \"\");\n  input = input.replace(/^\\[.*?\\]\\s*/, \"\");\n  const match = input.match(/“([^”]+)”/);\n  return match ? match[1] : input;\n};\n\n\nreturn {\n  ...$input.item.json,\n  title: titleCleaner(title ?? \"\"),\n  naration: cleaner(data ?? \"\"),\n  \n  videoPageText: undefined\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5984,
+        -992
+      ],
+      "id": "0d7633b7-9772-4bbc-a523-eed2c78ab7d8",
+      "name": "Clean naration and add url turn back hoax"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "=/home/node/datasetHoaxVideoWorkflow/{{ $('Read pagination for update').item.json.fileName }}",
+        "dataPropertyName": "=[object Object]",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        10640,
+        -928
+      ],
+      "id": "aca9b654-8cf3-48c6-bf7b-93afa2cd6739",
+      "name": "Write pagination"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  count: {{ $json.data[0].count + 1 }},\n  totalPages: {{ $json.data[0].totalPages }}\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        10192,
+        -928
+      ],
+      "id": "9cc69952-d485-40fa-b5f0-6a3af8ec53c9",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "toJson",
+        "binaryPropertyName": "={{ $json }}",
+        "options": {
+          "fileName": "paginationTurnBack"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        10416,
+        -928
+      ],
+      "id": "545f607d-e509-40c8-a16d-f55feda34e7b",
+      "name": "Convert to File1"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "if ($input.item.json.nextUrl === null) {\n  delete $input.item.json.nextUrl;\n}\n\nif ($input.item.json.paginationButtons) {\n  delete $input.item.json.paginationButtons;\n}\n\nreturn { ...$input.item.json, url: $(\"Split Out\").item.json.url };\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3568,
+        -912
+      ],
+      "id": "26f2910c-40ff-4964-b58b-7d1cfb7c5dd4",
+      "name": "Combine url"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "0ec466c3-0ca9-4a6e-b5a7-1a20891be05d",
+              "leftValue": "={{ $input.all().length }}",
+              "rightValue": 5,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        5968,
+        -128
+      ],
+      "id": "edd57fe4-2dbf-4c2b-946f-a157c02289ea",
+      "name": "Check if missing data is greater than 5"
+    },
+    {
+      "parameters": {
+        "content": "## Fallback using LLM",
+        "height": 736,
+        "width": 1296
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        4336,
+        -736
+      ],
+      "typeVersion": 1,
+      "id": "0bf05492-ee17-4d4b-8437-043233f5df1d",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "48384534-0018-4006-8fea-1f52db461495",
+              "leftValue": "={{ $json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        5424,
+        -560
+      ],
+      "id": "5f78e491-d4df-4b82-9aaa-18686e1f3f48",
+      "name": "Is data not empty"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ae42d5b9-41a7-4e24-a2f9-295f2bba987b",
+              "leftValue": "={{ $json.videoPage }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "2744e8b9-9d44-42e7-a4bf-39f90b5b583d",
+              "leftValue": "={{ $json.naration }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        4016,
+        -912
+      ],
+      "id": "f3a72da8-ce3f-47d5-9d0d-a65778829516",
+      "name": "check if some of data is empty. fallback using AI"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const paginationButtons = $input.item.json.paginationButtons;\n\n// Find the index of the current active page button\nconst currentPosition = paginationButtons.findIndex((it) =>\n  String(it).includes(' current\"')\n);\n\n// If current is the last page or not found, set nextUrl to null\nif (currentPosition === -1 || currentPosition === paginationButtons.length - 1) {\n  $input.item.json.nextUrl = null;\n  return $input.item;\n}\n\n// Extract href from the next button HTML\nconst html = paginationButtons[currentPosition + 1];\nconst match = html.match(/href=\"([^\"]+)\"/);\n\n$input.item.json.nextUrl = match ? match[1] : null;\n\nreturn $input.item;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2768,
+        -144
+      ],
+      "id": "0527b112-4879-4a2d-89fd-8353b4c57ab1",
+      "name": "extractNextUrl"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "963ab640-3082-414b-859d-f9e29fd6dd28",
+              "leftValue": "={{ $json.nextUrl }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2976,
+        -144
+      ],
+      "id": "0a02cf13-93e4-4496-9a90-6e7ea57383fe",
+      "name": "if nextUrl is not empty"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "219381ac-0c48-44f7-9c8d-c92398dadb38",
+              "leftValue": "={{ $json.paginationButtons }}",
+              "rightValue": "",
+              "operator": {
+                "type": "array",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2304,
+        -912
+      ],
+      "id": "21c627bf-ff41-4388-83da-d4e355408652",
+      "name": "If pagination does not exist"
+    },
+    {
+      "parameters": {
+        "operation": "fromJson",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        80,
+        -816
+      ],
+      "id": "dec4d450-4a56-450b-989b-2471a97b67ca",
+      "name": "Extract pagination",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "83e6ccc2-5cdd-486a-bfdc-e994daf2d4c0",
+              "leftValue": "={{ $json.data[0].count }}",
+              "rightValue": "={{ $json.data[0].totalPages }}",
+              "operator": {
+                "type": "number",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        304,
+        -816
+      ],
+      "id": "6d6f19a6-7a99-4637-9290-e88e12cfbcbb",
+      "name": "Is pagination already maxed?"
+    },
+    {
+      "parameters": {
+        "url": "=https://turnbackhoax.id/page/{{ $json.data[0].count }}",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "s",
+              "value": "video"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        528,
+        -912
+      ],
+      "id": "65e93739-72a9-4ab7-a68f-f677619cb34d",
+      "name": "Get the serch page"
+    },
+    {
+      "parameters": {
+        "authentication": "webhook",
+        "options": {},
+        "embeds": {
+          "values": [
+            {
+              "description": "=Sudah selesai bang \n```json\n{{ $json.data[0] }}\n```",
+              "author": "Scrapper",
+              "color": "#44FF00",
+              "timestamp": "={{ $now.toString() }}",
+              "title": "Sudah selesai bang"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        528,
+        -720
+      ],
+      "id": "4fdcdbe7-7d1a-40ee-ad80-1cdf77ce1d7d",
+      "name": "Send discord webhook is completed",
+      "webhookId": "a2ae47c9-ea0e-4053-a6ab-ae7a0a596a95",
+      "credentials": {
+        "discordWebhookApi": {
+          "id": "bm39Te9lBHmNpcEI",
+          "name": "Alert"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "totalPages",
+              "cssSelector": "#main-content > div > nav > div > a:nth-last-of-type(2)"
+            },
+            {
+              "key": "data",
+              "cssSelector": "#main-content > article.mh-loop-item > div > header > h3 > a",
+              "returnValue": "attribute",
+              "attribute": "href",
+              "returnArray": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        752,
+        -912
+      ],
+      "id": "0906be2a-c647-4157-bc14-f25e32186537",
+      "name": "Extract total pagination"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "videoPageText",
+              "cssSelector": "=div.entry-content > p > a",
+              "returnArray": true
+            },
+            {
+              "key": "title",
+              "cssSelector": "[id^=\"post-\"] > header > h1"
+            },
+            {
+              "key": "naration",
+              "cssSelector": "[id^=\"post-\"] > div > blockquote"
+            },
+            {
+              "key": "timeStamp",
+              "cssSelector": "[id^=\"post-\"] > header > p > span.entry-meta-date.updated > a"
+            },
+            {
+              "key": "article",
+              "cssSelector": "div.entry-content",
+              "returnValue": "html"
+            },
+            {
+              "key": "videoPageUrls",
+              "cssSelector": "div.entry-content > p > a",
+              "returnValue": "attribute",
+              "attribute": "href",
+              "returnArray": true
+            },
+            {
+              "key": "paginationButtons",
+              "cssSelector": "div.pagination",
+              "returnValue": "html"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        1856,
+        -912
+      ],
+      "id": "ca10622f-adea-4a85-a43e-e82fc2f2d2fa",
+      "name": "Extract data on page"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const html = $json.paginationButtons;\n\n// Match all direct <a> and <span> tags inside .pagination\nconst matches = html ? html.match(/<(a|span)[^>]*>.*?<\\/\\1>/g) : null;\n\n$input.item.json.paginationButtons = matches;\nreturn $input.item;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2080,
+        -912
+      ],
+      "id": "e3f001fa-f19d-4df3-b1e8-656cf44f6dfa",
+      "name": "split pagination button"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.nextUrl }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3216,
+        -144
+      ],
+      "id": "07f305d7-5c49-47b9-9dbe-8a42678012ef",
+      "name": "Fetch next hoax page"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "videoPageText",
+              "cssSelector": "=div.entry-content > p > a",
+              "returnArray": true
+            },
+            {
+              "key": "videoPageUrls",
+              "cssSelector": "div.entry-content > p > a",
+              "returnValue": "attribute",
+              "attribute": "href",
+              "returnArray": true
+            },
+            {
+              "key": "paginationButtons",
+              "cssSelector": "div.pagination",
+              "returnValue": "html"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        3408,
+        -144
+      ],
+      "id": "29426b2b-9cb7-47c7-a81c-136471b4b3e2",
+      "name": "Extract next page data url"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const html = $json.paginationButtons;\n\n// Match all direct <a> and <span> tags inside .pagination\nconst matches = html.match(/<(a|span)[^>]*>.*?<\\/\\1>/g) || [];\n\nreturn {\n  ...$('Extract data on page').item.json,\n  videoPageText: [\n    ...$('Extract data on page').item.json.videoPageText,\n    ...$input.item.json.videoPageText\n  ],\n  videoPageUrls: [\n    ...$('Extract data on page').item.json.videoPageUrls,\n    ...$input.item.json.videoPageUrls\n  ],\n  paginationButtons: matches\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3616,
+        -144
+      ],
+      "id": "a4b344c6-3b67-4a88-b5e2-0abc53fc4ace",
+      "name": "Assemble data and extract pagination button"
+    },
+    {
+      "parameters": {
+        "content": "## Handle page pagination",
+        "height": 272,
+        "width": 1200
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2672,
+        -208
+      ],
+      "typeVersion": 1,
+      "id": "679e2f53-3c08-432a-8299-e26eae8c426c",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        3344,
+        -912
+      ],
+      "id": "8bab5c60-222e-495f-afee-adb2197356ea",
+      "name": "merge processed data"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "url",
+              "cssSelector": "body > header > div.primary-segment.row > div.col.col-sm-2._livepage > div > a",
+              "returnValue": "attribute",
+              "attribute": "href"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        7712,
+        -480
+      ],
+      "id": "0374e3e0-6284-47ca-a535-b9ed32e6fc31",
+      "name": "perma.cc extractor"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "url",
+              "cssSelector": "#searchInput",
+              "returnValue": "value"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        7712,
+        -80
+      ],
+      "id": "0b3fc464-ab3c-438c-93f5-4856fae4c04f",
+      "name": "ghost archive extractor"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Add a new field called 'myNewField' to the JSON of the item\ndelete $input.item.json._source;\ndelete $input.item.json.article;\n\nreturn $input.item;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        6480,
+        -1056
+      ],
+      "id": "17ad36df-b1b0-407a-9998-7ec818d93732",
+      "name": "Remove source field"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c02a00bd-11e7-434b-b60c-c73511dc07dc",
+              "leftValue": "={{ $json.videoPage }}",
+              "rightValue": "=archive",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "1bda8ffb-a0dc-436c-b165-0aef7d7de64c",
+              "leftValue": "={{ $json.videoPage }}",
+              "rightValue": "perma.cc",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        6704,
+        -1056
+      ],
+      "id": "c1d1e01d-610e-4b6f-820c-0a9c4740e537",
+      "name": "Check if videoPage include supported archive scrapper"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const extractSecondHttpsUrl = (text) => {\n  const matches = text.match(/https:\\/\\/[^\\s\"]+/g);\n  return matches && matches.length > 1 ? matches[1] : null;\n}\n\nreturn {\n  ...$input.item.json,\n  videoPage: extractSecondHttpsUrl($input.item.json.videoPage)\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        8160,
+        -656
+      ],
+      "id": "d4916d6e-0aaf-408b-b81b-479fb7a1ac13",
+      "name": "Extract web.archive.org"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.videoPage }}",
+                    "rightValue": "web.archive.org",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    },
+                    "id": "a7fd2104-1a20-4b6e-b716-ce98a40d1b68"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "64084821-7539-44b3-9da9-91787fb44cda",
+                    "leftValue": "={{ $json.videoPage }}",
+                    "rightValue": "perma.cc",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "fd708c4a-fdb5-4aef-9cf8-5a0fd8c71c44",
+                    "leftValue": "={{ $json.videoPage }}",
+                    "rightValue": "ghostarchive.org",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        7040,
+        -368
+      ],
+      "id": "78ff6689-66d0-495c-a853-6ed0f0e08083",
+      "name": "Switch supported archive"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.videoPage }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        7264,
+        -416
+      ],
+      "id": "82c543d9-58e8-4878-b742-34802da23bf5",
+      "name": "Perma puller",
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.videoPage }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        7264,
+        0
+      ],
+      "id": "3f3eb08d-fd62-4e52-9144-b84313207baa",
+      "name": "Ghost puller",
+      "retryOnFail": false,
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "numberInputs": 4
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        8384,
+        -368
+      ],
+      "id": "d7edd1f6-cded-477f-810e-99002c04fe26",
+      "name": "merge append archive"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        8896,
+        -928
+      ],
+      "id": "6a1115cf-6b93-4881-b95f-2f57872040ad",
+      "name": "merge to clean data"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        5760,
+        -992
+      ],
+      "id": "3c40ba0f-6c82-48ae-99f7-62e6411442e0",
+      "name": "merge data from ai"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const videoPageText = $input.item.json.videoPageText\n\nconst index = videoPageText.findIndex((it) => {\n\n  if ([\"video\", \"arsip\", \"archive\", \"facebook.com\", \"x.com\", \"titkok.com\", \"bit.ly\", \"turnbackhoax.id\", \"perma.cc\"].includes(it))\n    return true\n  \n});\n\nreturn {\n  ...$input.item.json,\n  videoPage: index !== -1 ? $input.item.json.videoPageUrls[index] : null,\n  relatedUrls: $input.item.json.videoPageUrls,\n  videoPageUrls: undefined\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3792,
+        -912
+      ],
+      "id": "96015e91-fd23-4ce2-8225-a82bd7d3e27f",
+      "name": "Select url for videoPage"
+    },
+    {
+      "parameters": {
+        "content": "## Archive puller url",
+        "height": 800,
+        "width": 1568
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        6960,
+        -704
+      ],
+      "typeVersion": 1,
+      "id": "ceada89b-1a9a-485f-8069-018a067c7bf2",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "## Save dataset and update pagination",
+        "height": 288,
+        "width": 720,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        8816,
+        -1040
+      ],
+      "typeVersion": 1,
+      "id": "32409745-59e4-47e8-8453-1c3a92d3c98d",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "content": "## Data preprocessing",
+        "height": 272,
+        "width": 1168
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        5696,
+        -1120
+      ],
+      "typeVersion": 1,
+      "id": "5d564640-963d-4caf-862a-c1ccae433365",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "D:\\Downloads\\gemma-3-4b-it-Q4_K_M.gguf",
+          "mode": "list",
+          "cachedResultName": "D:\\Downloads\\gemma-3-4b-it-Q4_K_M.gguf"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        4560,
+        -16
+      ],
+      "id": "956a8276-cbca-400b-8e94-38833cc51ab0",
+      "name": "Ini lokal Gemma 3 4b",
+      "credentials": {
+        "openAiApi": {
+          "id": "ARR9n4RjeFPJZevs",
+          "name": "GPU llama"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const batchSize = 10;\n\nconst allItems = $input.all();\nconst batchedItems = [];\n\nfor (let i = 0; i < allItems.length; i += batchSize) {\n\tconst chunk = allItems.slice(i, i + batchSize).map((item) => item.json);\n\n\tbatchedItems.push({\n\t\tjson: {\n\t\t\tgroup: chunk\n\t\t}\n\t});\n}\n\nreturn batchedItems;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4480,
+        -560
+      ],
+      "id": "d1ff95d7-eff0-406e-8486-94bf27d74c4d",
+      "name": "Group data by 10 by 10"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "You will receive a list of hoax article data in JSON format, which is an array of objects. Each object contains fields such as title, url, article (HTML content), relatedUrls (an array of URLs), videoPageText (an array of texts corresponding to relatedUrls), timeStamp, and others. Your task is to process each object in the array and extract the following fields, formatting them as specified, to create a new JSON object. Collect all these objects into a JSON array.\nFor each object in the input array, extract and process the following fields:\n\ntitle: \n\nTake the title field from the input object.\nIf it begins with a category prefix enclosed in square brackets (e.g., \"[SALAH]\", \"[PENIPUAN]\"), remove the prefix and any following space.\nRemove any leading or trailing quotes, brackets, or special characters (e.g., !, #, $, %, etc.), and trim any extra spaces to return only the core title text.\n\n\nurl: \n\nTake the url field from the input object and return it as-is.\n\n\nvideoPage: \n\nUse the relatedUrls and videoPageText fields.\nrelatedUrls is an array of URLs, and videoPageText is an array of texts describing each URL in relatedUrls (assume they correspond by index).\nSelect the most relevant URL as follows:\nLook for the first URL in relatedUrls where the corresponding text in videoPageText contains keywords such as \"video\", \"post\", \"tweet\", \"status\" (case-insensitive).\nIf no such URL is found, select the first URL in relatedUrls that is a social media link (e.g., contains \"facebook.com\", \"twitter.com\", \"instagram.com\", \"youtube.com\", etc.).\nIf no social media link is available, select the first URL in the relatedUrls array.\n\n\nReturn this selected URL as-is.\n\n\nnaration: \n\nFrom the article field (which contains HTML content), locate the section starting with the word \"Narasi:\" (case-sensitive).\nExtract all text following \"Narasi:\" until the next section or heading (e.g., until a <p> tag or similar delimiter that indicates a new section begins).\nClean the extracted text by:\nRemoving all HTML tags (e.g., <br>, <p>, etc.).\nRemoving line breaks and extra whitespace.\nRemoving any URLs (e.g., \"https://...\").\nConcatenate the remaining text into a single paragraph of plain text, keeping only the topic-related narrative.\n\n\nIf multiple quoted strings or paragraphs follow \"Narasi:\", include all of them in the result.\n\n\ntimeStamp: \n\nTake the timeStamp field from the input object and return it as-is.\n\n\nrelatedUrls:\n\nTake the entire relatedUrls array from the input object and include it. Then, you could find url that haven't listed on this array, if you find it, then append it here. make sure filter it as url, and no duplicates\n\n\n\nOutput\n\nFor each input object, create a new JSON object with the six fields above: title, url, videoPage, naration, timeStamp, and relatedUrls.\nCollect all these objects into a JSON array.\nEnsure the output is a valid JSON array of objects, strictly matching the format below, with no additional text, comments, or explanations outside the array.\n\nExpected Output Format\n[\n  {\n    \"title\": \"Cleaned title here\",\n    \"url\": \"https://...\",\n    \"videoPage\": \"https://...\",\n    \"naration\": \"Context/naration about the topic here...\",\n    \"timeStamp\": \"2025-07-21\",\n    \"relatedUrls\": [\n      \"https://...\",\n      \"https://...\"\n    ]\n  },\n  {\n    \"title\": \"Cleaned title here\",\n    \"url\": \"https://...\",\n    \"videoPage\": \"https://...\",\n    \"naration\": \"Context/naration about the topic here...\",\n    \"timeStamp\": \"2025-07-21\",\n    \"relatedUrls\": [\n      \"https://...\",\n      \"https://...\"\n    ]\n  }\n]",
+        "hasOutputParser": true,
+        "needsFallback": true,
+        "messages": {
+          "messageValues": [
+            {
+              "type": "HumanMessagePromptTemplate",
+              "message": "={{ $input.item.json.group.toJsonString() }}"
+            }
+          ]
+        },
+        "batching": {
+          "batchSize": 2,
+          "delayBetweenBatches": 1000
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        4704,
+        -560
+      ],
+      "id": "9690b86d-ccf8-4913-8496-7a0bccc3af5e",
+      "name": "Basic LLM Chain",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "[\n  {\n    \"title\": \"Cleaned title here\",\n    \"url\": \"https://...\",\n    \"videoPage\": \"https://...\",\n    \"naration\": \"Context/naration about the topic here...\",\n    \"timeStamp\": \"2025-07-21\",\n    \"relatedUrls\": [\n      \"https://...\",\n      \"https://...\"\n    ]\n  },\n  {\n    \"title\": \"Cleaned title here\",\n    \"url\": \"https://...\",\n    \"videoPage\": \"https://...\",\n    \"naration\": \"Context/naration about the topic here...\",\n    \"timeStamp\": \"2025-07-21\",\n    \"relatedUrls\": [\n      \"https://...\",\n      \"https://...\"\n    ]\n  }\n]",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        4800,
+        -336
+      ],
+      "id": "759786ab-3da7-444a-adf0-1ac7fcdf05a7",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nlet output = [];\nfor (const item of $input.all()) {\n  output.unshift(...item.json.output);\n}\n\nreturn output;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5136,
+        -560
+      ],
+      "id": "c66ff8d9-1c4f-4063-a7b9-a0a805537e2c",
+      "name": "make into one arry"
+    },
+    {
+      "parameters": {
+        "model": "deepseek/deepseek-chat-v3-0324:free",
+        "options": {
+          "temperature": 0.1,
+          "topP": 0.5
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        4784,
+        80
+      ],
+      "id": "901f2947-4932-439d-b222-8fed0ea48030",
+      "name": "gemma 3",
+      "credentials": {
+        "openRouterApi": {
+          "id": "7EiThyzOFBzZiqJK",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nlet output = [];\nfor (const item of $input.all()) {\n  output.unshift(...item.json.data);\n}\n\nreturn output;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2192,
+        -1456
+      ],
+      "id": "36bbc6cd-c8b6-49d3-b385-c17c61a352e4",
+      "name": "Flat it"
+    },
+    {
+      "parameters": {
+        "fileSelector": "/home/node/datasetHoaxVideoWorkflow/paginationTurnBack.json",
+        "options": {
+          "dataPropertyName": "data"
+        }
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        9760,
+        -928
+      ],
+      "id": "74cabe6c-86ac-4b42-aed4-ad74c752e90e",
+      "name": "Read pagination for update",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "operation": "fromJson",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        9984,
+        -928
+      ],
+      "id": "0b71d0fd-1cd9-41e0-9318-430e778339fe",
+      "name": "Extract pagination for update",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "content": "## Save pagination update",
+        "height": 288,
+        "width": 1232,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        9680,
+        -1040
+      ],
+      "typeVersion": 1,
+      "id": "f8179dee-e419-418d-a526-f3ae17f12b96",
+      "name": "Sticky Note11"
+    },
+    {
+      "parameters": {
+        "content": "## Save page total update",
+        "height": 288,
+        "width": 784,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1120,
+        -416
+      ],
+      "typeVersion": 1,
+      "id": "64ba2ef4-9732-482c-8e2b-53b8d54512df",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  count: {{ $('Extract pagination').item.json.data[0].count }},\n  totalPages: {{ $json.totalPages }}\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1216,
+        -320
+      ],
+      "id": "e6f6a1d8-30e0-4c5a-8422-456a0190f70a",
+      "name": "Edit pagination"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "=/home/node/datasetHoaxVideoWorkflow/{{ $('Read pagination').item.json.fileName }}",
+        "dataPropertyName": "=[object Object]",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        1664,
+        -320
+      ],
+      "id": "6c3e15bb-a9d7-478c-9477-dc70e91c6b52",
+      "name": "Write total update"
+    },
+    {
+      "parameters": {
+        "operation": "toJson",
+        "binaryPropertyName": "={{ $json }}",
+        "options": {
+          "fileName": "paginationTurnBack"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1440,
+        -320
+      ],
+      "id": "05240246-87b2-4213-89ae-2d9ba7632d09",
+      "name": "Convert to File total"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "return {\n  ...$('Switch supported archive').item.json,\n  videoPage: $input.item.json.url || $('Switch supported archive').item.json\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        8160,
+        -416
+      ],
+      "id": "2d50bfee-8cbc-43e2-ac63-f45913bc4117",
+      "name": "merge newUrl"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "return {\n  ...$('Switch supported archive').item.json,\n  videoPage: $input.item.json.url || $('Switch supported archive').item.json.videoPage\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        8160,
+        0
+      ],
+      "id": "cb9a51a6-e63a-464d-9dfd-8a75d9955c91",
+      "name": "merge newUrl1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5480f393-d855-45d4-8959-0e4dffebd982",
+              "leftValue": "={{ $input.item.json.data }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        7488,
+        0
+      ],
+      "id": "fecb870c-a3f9-4e16-ad3b-063b41edc113",
+      "name": "check if data is exist"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5480f393-d855-45d4-8959-0e4dffebd982",
+              "leftValue": "={{ $input.item.json.data }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        7488,
+        -416
+      ],
+      "id": "aca68b92-349f-47e5-83d5-294b6f9f6f5c",
+      "name": "check if data is exist1"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash-preview-05-20",
+        "options": {
+          "temperature": 0.1,
+          "topP": 0.5
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        4656,
+        -112
+      ],
+      "id": "c0b159c0-35c5-41ea-9a23-db9c2ed0ab71",
+      "name": "Google Gemini 2 flash lite",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "4sAuTN4q0OVGuY8s",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        7936,
+        0
+      ],
+      "id": "8c89f4d9-133f-4f58-9f73-ab8d2d0d49f1",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        7936,
+        -416
+      ],
+      "id": "ad8c2c80-d89c-4f7a-b77a-b28bf52c901c",
+      "name": "Merge2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        4768,
+        -128
+      ],
+      "id": "feeec552-316c-4352-b295-b91da9e3b26d",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "48bSeMPbnvN7tCzY",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f21c17b6-ee8b-410f-a651-d509041edc4a",
+              "leftValue": "={{ $json.url }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        1408,
+        -912
+      ],
+      "id": "5312fc63-c094-4ea9-9951-cf83bfec14a6",
+      "name": "Filter null data"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Read pagination",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Filter null data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch hoax page": {
+      "main": [
+        [
+          {
+            "node": "Extract data on page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Flat it",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Remove source field",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk1": {
+      "main": [
+        [
+          {
+            "node": "Read pagination for update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read pagination": {
+      "main": [
+        [
+          {
+            "node": "Extract pagination",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Discord",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Discord": {
+      "main": [
+        [
+          {
+            "node": "Missing video page breakpoint",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write pagination": {
+      "main": [
+        []
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Convert to File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File1": {
+      "main": [
+        [
+          {
+            "node": "Write pagination",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clean naration and add url turn back hoax": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Combine url": {
+      "main": [
+        [
+          {
+            "node": "Select url for videoPage",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check if missing data is greater than 5": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is data not empty": {
+      "main": [
+        [
+          {
+            "node": "merge data from ai",
+            "type": "main",
+            "index": 1
+          }
+        ],
+        [
+          {
+            "node": "Check if missing data is greater than 5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "check if some of data is empty. fallback using AI": {
+      "main": [
+        [
+          {
+            "node": "merge data from ai",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Group data by 10 by 10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "extractNextUrl": {
+      "main": [
+        [
+          {
+            "node": "if nextUrl is not empty",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "if nextUrl is not empty": {
+      "main": [
+        [
+          {
+            "node": "Fetch next hoax page",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "merge processed data",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "If pagination does not exist": {
+      "main": [
+        [
+          {
+            "node": "merge processed data",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "extractNextUrl",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract pagination": {
+      "main": [
+        [
+          {
+            "node": "Is pagination already maxed?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is pagination already maxed?": {
+      "main": [
+        [
+          {
+            "node": "Get the serch page",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send discord webhook is completed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get the serch page": {
+      "main": [
+        [
+          {
+            "node": "Extract total pagination",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send discord webhook is completed": {
+      "main": [
+        [
+          {
+            "node": "Stop and Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract total pagination": {
+      "main": [
+        [
+          {
+            "node": "Edit pagination",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract data on page": {
+      "main": [
+        [
+          {
+            "node": "split pagination button",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "split pagination button": {
+      "main": [
+        [
+          {
+            "node": "If pagination does not exist",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch next hoax page": {
+      "main": [
+        [
+          {
+            "node": "Extract next page data url",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract next page data url": {
+      "main": [
+        [
+          {
+            "node": "Assemble data and extract pagination button",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Assemble data and extract pagination button": {
+      "main": [
+        [
+          {
+            "node": "extractNextUrl",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "merge processed data": {
+      "main": [
+        [
+          {
+            "node": "Combine url",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Remove source field": {
+      "main": [
+        [
+          {
+            "node": "Check if videoPage include supported archive scrapper",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check if videoPage include supported archive scrapper": {
+      "main": [
+        [
+          {
+            "node": "Switch supported archive",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "merge to clean data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch supported archive": {
+      "main": [
+        [
+          {
+            "node": "Extract web.archive.org",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Perma puller",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Ghost puller",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "merge append archive",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Perma puller": {
+      "main": [
+        [
+          {
+            "node": "check if data is exist1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ghost puller": {
+      "main": [
+        [
+          {
+            "node": "check if data is exist",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "perma.cc extractor": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract web.archive.org": {
+      "main": [
+        [
+          {
+            "node": "merge append archive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ghost archive extractor": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "merge append archive": {
+      "main": [
+        [
+          {
+            "node": "merge to clean data",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "merge to clean data": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "merge data from ai": {
+      "main": [
+        [
+          {
+            "node": "Clean naration and add url turn back hoax",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Select url for videoPage": {
+      "main": [
+        [
+          {
+            "node": "check if some of data is empty. fallback using AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ini lokal Gemma 3 4b": {
+      "ai_languageModel": [
+        []
+      ]
+    },
+    "Group data by 10 by 10": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "make into one arry",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "make into one arry": {
+      "main": [
+        [
+          {
+            "node": "Is data not empty",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "gemma 3": {
+      "ai_languageModel": [
+        []
+      ]
+    },
+    "Flat it": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read pagination for update": {
+      "main": [
+        [
+          {
+            "node": "Extract pagination for update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit pagination": {
+      "main": [
+        [
+          {
+            "node": "Convert to File total",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File total": {
+      "main": [
+        [
+          {
+            "node": "Write total update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract pagination for update": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "merge newUrl": {
+      "main": [
+        [
+          {
+            "node": "merge append archive",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "merge newUrl1": {
+      "main": [
+        [
+          {
+            "node": "merge append archive",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "check if data is exist": {
+      "main": [
+        [
+          {
+            "node": "ghost archive extractor",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "check if data is exist1": {
+      "main": [
+        [
+          {
+            "node": "perma.cc extractor",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Google Gemini 2 flash lite": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "merge newUrl1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge2": {
+      "main": [
+        [
+          {
+            "node": "merge newUrl",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Structured Output Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Filter null data": {
+      "main": [
+        [
+          {
+            "node": "Fetch hoax page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "rnXJ1XQsW1gGNEu1",
+    "executionTimeout": 600
+  },
+  "versionId": "9435e8a7-3f85-4cb8-8687-8887e9b3c327",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "009270b797a0d42a73f497a06f1a1471e956efb1c23ab8aa8b79704ab71f7683"
+  },
+  "id": "NPRLg7MmU5VeKxfO",
+  "tags": []
+}
